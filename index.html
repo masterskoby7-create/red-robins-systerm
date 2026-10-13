@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Red Robin's Access System</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <section id="authView" class="view active">
+        <div class="auth-shell">
+          <div class="brand-block">
+            <div class="brand-mark">R</div>
+            <h1>Red Robin's Access System</h1>
+          </div>
+
+          <div id="legalNotice" class="legal-notice">
+            <strong>Legal Notice:</strong>
+            <p>
+              Red Robin's Access System is designed for monitoring and managing YOUR OWN devices and network connections only. You must own the device or have explicit written permission from the owner to access, view, or interact with any device, network, file, or signal through this system. Accessing or monitoring devices, networks, or files that you do not own or have permission for is illegal, unethical, and may result in legal action. Unauthorised use will result in permanent loss of access. By creating an account, you confirm that you will use this system responsibly and only with devices and data that belong to you or that you have clear permission to use.
+            </p>
+          </div>
+
+          <div id="authTabs" class="auth-tabs">
+            <button class="tab-button active" data-view="registerView">Create Account</button>
+            <button class="tab-button" data-view="loginView">Login</button>
+          </div>
+
+          <div id="registerView" class="auth-panel active">
+            <form id="registerForm" novalidate>
+              <div class="form-row">
+                <label for="regUsername">Username</label>
+                <input id="regUsername" name="username" type="text" />
+              </div>
+
+              <div class="form-row">
+                <label for="regDisplayName">Display Name</label>
+                <input id="regDisplayName" name="displayName" type="text" />
+              </div>
+
+              <div class="form-row">
+                <label for="regQuestion">Security Question</label>
+                <input id="regQuestion" name="question" type="text" placeholder="Choose or type your own security question" />
+              </div>
+
+              <div class="form-row">
+                <label for="regAnswer">Security Answer</label>
+                <input id="regAnswer" name="answer" type="text" />
+              </div>
+
+              <div class="form-row">
+                <label for="regPin">PIN</label>
+                <input id="regPin" name="pin" type="password" inputmode="numeric" maxlength="6" pattern="\d*" />
+              </div>
+
+              <div class="form-row">
+                <label for="regConfirmPin">Confirm PIN</label>
+                <input id="regConfirmPin" name="confirmPin" type="password" inputmode="numeric" maxlength="6" pattern="\d*" />
+              </div>
+
+              <p class="pin-note">Your PIN must be between 4 and 6 digits long — numbers only please.</p>
+
+          <div class="terms-agreement-box">
+            <label class="terms-label" for="termsCheckbox">
+              <input id="termsCheckbox" name="termsAgreement" type="checkbox" />
+              <span>I have read, understood, and agree to the full Terms and Conditions</span>
+            </label>
+            <a href="#" class="inline-terms-link" data-action="open-terms" data-return-page="registerView">View Full Terms and Conditions</a>
+          </div>
+
+          <div id="registerError" class="field-message error hidden"></div>
+          <button id="createAccountBtn" type="submit" class="primary-button" disabled>Create Account</button>
+            </form>
+          </div>
+
+          <div id="loginView" class="auth-panel">
+            <div class="welcome-copy">Welcome back — please enter your PIN to continue.</div>
+            <form id="loginForm" novalidate>
+              <div class="pin-wrapper">
+                <input id="loginPin" type="password" inputmode="numeric" maxlength="6" pattern="\d*" />
+                <button type="button" id="togglePinVisibility" class="icon-button" aria-label="Toggle PIN visibility">👁</button>
+              </div>
+              <div id="loginError" class="field-message error hidden"></div>
+              <button type="submit" class="primary-button">Login</button>
+              <label class="remember-me"><input type="checkbox" id="rememberMe" /> Remember me on this device</label>
+              <button type="button" id="forgotPinBtn" class="text-button">I forgot my PIN</button>
+              <a href="#" class="inline-terms-link small-link" data-action="open-terms" data-return-page="loginView">Terms and Conditions</a>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="mainAppView" class="view">
+        <div class="layout-shell">
+          <aside class="sidebar">
+            <div class="sidebar-header">
+              <div class="brand-mark small">R</div>
+              <div>
+                <h2>Red Robin</h2>
+                <span>Access System</span>
+              </div>
+            </div>
+
+            <nav id="mainNav" class="main-nav">
+              <button class="nav-button active" data-page="dashboardPage">Dashboard</button>
+              <button class="nav-button" data-page="networkPage">Network Monitor</button>
+              <button class="nav-button" data-page="bluetoothPage">Bluetooth Scanner</button>
+              <button class="nav-button" data-page="threatPage">Threat Detection</button>
+              <button class="nav-button" data-page="devicesPage">Connected Devices</button>
+              <button class="nav-button" data-page="transfersPage">File Transfers</button>
+              <button class="nav-button" data-page="settingsPage">Settings</button>
+              <button class="nav-button" data-page="aboutPage">About</button>
+            </nav>
+
+            <div class="sidebar-footer">
+              <button id="logoutBtn" class="secondary-button">Log Out</button>
+            </div>
+          </aside>
+
+          <main class="content-panel">
+            <section id="dashboardPage" class="page active">
+              <div class="page-header">
+                <h2>Dashboard</h2>
+                <div id="dashboardWelcome" class="welcome-pill"></div>
+              </div>
+              <div id="dashboardSummary" class="summary-grid"></div>
+              <div class="card-grid two-up">
+                <div class="panel">
+                  <h3>Account Details</h3>
+                  <div id="accountInfo" class="info-list"></div>
+                </div>
+                <div class="panel">
+                  <h3>Quick Actions</h3>
+                  <div class="stack-actions">
+                    <button class="primary-button" data-page="networkPage">Open Network Monitor</button>
+                    <button class="primary-button" data-page="bluetoothPage">Open Bluetooth Scanner</button>
+                    <button class="primary-button" data-page="devicesPage">Open File Manager</button>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <h3>Login History</h3>
+                <div id="dashboardHistory" class="history-list compact"></div>
+              </div>
+            </section>
+
+            <section id="networkPage" class="page">
+              <div class="page-header">
+                <h2>Network Monitor</h2>
+                <div class="header-actions">
+                  <select id="refreshIntervalSelect">
+                    <option value="manual">Manual Refresh Only</option>
+                    <option value="5">Every 5 Seconds</option>
+                    <option value="10">Every 10 Seconds</option>
+                    <option value="30">Every 30 Seconds</option>
+                    <option value="60">Every 1 Minute</option>
+                    <option value="300">Every 5 Minutes</option>
+                  </select>
+                  <button id="refreshNetworkBtn" class="primary-button">Refresh Now</button>
+                  <button id="copyNetworkBtn" class="secondary-button">Copy All Info</button>
+                </div>
+              </div>
+              <div id="networkSummary" class="summary-grid"></div>
+              <div class="panel">
+                <h3>Active Connections</h3>
+                <div id="networkConnections" class="table-list"></div>
+              </div>
+              <div class="panel">
+                <h3>Network Activity Log</h3>
+                <div id="networkLog" class="history-list"></div>
+              </div>
+              <div class="bottom-note">This section monitors YOUR internet connection only. It does not show you information about other people on the network. Monitoring or accessing other devices on your network without permission is illegal and this tool will not do that.</div>
+            </section>
+
+            <section id="bluetoothPage" class="page">
+              <div class="page-header">
+                <h2>Bluetooth Scanner</h2>
+                <div class="header-actions">
+                  <label class="toggle-inline">
+                    <input id="bluetoothMasterToggle" type="checkbox" />
+                    <span>Scanning Enabled</span>
+                  </label>
+                  <button id="scanBluetoothBtn" class="primary-button">Scan Now</button>
+                </div>
+              </div>
+              <div id="bluetoothSummary" class="summary-grid"></div>
+              <div class="panel">
+                <h3>Detected Devices</h3>
+                <div id="bluetoothList" class="device-list"></div>
+              </div>
+              <div class="panel">
+                <h3>Bluetooth History</h3>
+                <div id="bluetoothHistory" class="history-list"></div>
+              </div>
+              <div class="bottom-note">This scanner detects devices within range of YOUR computer only. It will not connect to or access devices without your permission. Unauthorised pairing or access to another person's device is illegal.</div>
+            </section>
+
+            <section id="threatPage" class="page">
+              <div class="page-header">
+                <h2>Threat Detection</h2>
+                <div class="header-actions compact-right">
+                  <button id="pauseAlertsBtn" class="secondary-button">Pause Alerts</button>
+                  <button id="clearAlertsBtn" class="danger-button">Clear All Logs</button>
+                </div>
+              </div>
+              <div class="notice-banner">This system monitors patterns on YOUR own device. It will not catch every possible problem and is NOT a replacement for proper antivirus or security software. Always use trusted sources and stay careful online. This tool does NOT hack or detect threats on other people's devices.</div>
+              <div id="threatSummary" class="summary-grid"></div>
+              <div class="panel">
+                <h3>Live Alert Feed</h3>
+                <div id="alertsFeed" class="alert-feed"></div>
+              </div>
+              <div class="panel">
+                <h3>Archive</h3>
+                <div id="alertArchive" class="history-list"></div>
+              </div>
+            </section>
+
+            <section id="devicesPage" class="page">
+              <div class="page-header">
+                <h2>Connected Devices & File Manager</h2>
+              </div>
+              <div id="deviceCards" class="device-card-grid"></div>
+              <div class="file-manager-panel">
+                <div class="file-browser">
+                  <div class="browser-toolbar">
+                    <button id="fileBackBtn" class="small-button">Back</button>
+                    <button id="fileForwardBtn" class="small-button">Forward</button>
+                    <button id="fileUpBtn" class="small-button">Up</button>
+                    <button id="fileHomeBtn" class="small-button">Home</button>
+                    <input id="fileSearch" type="search" placeholder="Search files..." />
+                    <select id="fileSortSelect">
+                      <option value="name">Sort by Name</option>
+                      <option value="date-desc">Sort by Date (Newest)</option>
+                      <option value="date-asc">Sort by Date (Oldest)</option>
+                      <option value="size-desc">Sort by Size (Largest)</option>
+                      <option value="type">Sort by File Type</option>
+                    </select>
+                  </div>
+                  <div class="file-layout">
+                    <div class="file-content">
+                      <div id="fileList" class="file-list"></div>
+                    </div>
+                    <aside class="file-details-panel">
+                      <h3>Selected File</h3>
+                      <div id="selectedFilePanel" class="selected-file-panel"></div>
+                    </aside>
+                  </div>
+                </div>
+              </div>
+              <div class="bottom-note">⚠️ IMPORTANT — Only view, copy, or modify files on devices that YOU own or have explicit written permission to use. Unauthorised access to someone else's files is illegal and a serious violation of privacy. Always ask first.</div>
+            </section>
+
+            <section id="transfersPage" class="page">
+              <div class="page-header">
+                <h2>File Transfers</h2>
+                <button id="clearTransfersBtn" class="secondary-button">Clear History</button>
+              </div>
+              <div class="panel">
+                <h3>Active Transfers</h3>
+                <div id="activeTransfers" class="transfer-list"></div>
+              </div>
+              <div class="panel">
+                <h3>Transfer History</h3>
+                <div id="transferHistory" class="transfer-list"></div>
+              </div>
+              <div class="bottom-note">⚠️ Only download, copy, or share files that you have the legal right to possess and use. Respect copyright laws and do not share sensitive or personal information that belongs to others.</div>
+            </section>
+
+            <section id="settingsPage" class="page">
+              <div class="page-header">
+                <h2>Settings</h2>
+              </div>
+              <div id="settingsContainer" class="settings-sections"></div>
+            </section>
+
+            <section id="aboutPage" class="page">
+              <div class="page-header">
+                <h2>About</h2>
+              </div>
+              <div class="legal-notice about-legal">
+                <strong>Legal Notice:</strong>
+                <p>Red Robin's Access System is designed for monitoring and managing YOUR OWN devices and network connections only. You must own the device or have explicit written permission from the owner to access, view, or interact with any device, network, file, or signal through this system. Accessing or monitoring devices, networks, or files that you do not own or have permission for is illegal, unethical, and may result in legal action. Unauthorised use will result in permanent loss of access. By creating an account, you confirm that you will use this system responsibly and only with devices and data that belong to you or that you have clear permission to use.</p>
+              </div>
+              <div class="panel about-panel">
+                <p>Red Robin's Access System gives you full visibility and control over your own laptop computer, your internet connection, nearby Bluetooth devices, and any external devices you plug into your computer. It shows you what your own device is doing, what signals your computer can detect around you, what connections your computer is making to the internet, and lets you safely view, manage, and transfer files on devices that belong to you. This system does NOT allow you to access, control, or monitor other people's devices. That is illegal and this tool is not designed for that purpose.</p>
+              </div>
+            </section>
+          </main>
+        </div>
+      </section>
+    </div>
+
+    <div id="modalBackdrop" class="modal-backdrop hidden">
+      <div id="modalCard" class="modal-card"></div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
