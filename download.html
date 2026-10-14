@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1d1d1f">
+  <title>Download Red Robin's Access System</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: #1d1d1f;
+      color: #f4e9d7;
+      --border: #4a3d35;
+      --muted: #d4c3aa;
+      --orange: #c76d2f;
+      --panel: #2a2728;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      display: grid;
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px;
+      place-items: center;
+    }
+
+    main {
+      width: min(100%, 620px);
+      padding: 36px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #211f20;
+      box-shadow: 0 18px 42px #0005;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 52px;
+      height: 52px;
+      margin-bottom: 22px;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #8c2d1d, var(--orange));
+      font-size: 1.8rem;
+      font-weight: 900;
+    }
+
+    h1 { margin: 0 0 10px; font-size: clamp(1.8rem, 5vw, 2.4rem); }
+    p { color: var(--muted); line-height: 1.55; }
+    fieldset { display: grid; gap: 12px; margin: 26px 0 18px; padding: 0; border: 0; }
+    legend { margin-bottom: 12px; font-weight: 700; }
+
+    .system-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel);
+      cursor: pointer;
+    }
+
+    .system-option:has(input:checked) { border-color: var(--orange); }
+    .system-option input { accent-color: var(--orange); }
+    .system-option:focus-within { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+    button {
+      width: 100%;
+      padding: 14px 18px;
+      border: 0;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #8c2d1d, var(--orange));
+      color: #fff8ed;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    button:disabled { background: #514943; color: #d4c3aa; cursor: not-allowed; }
+    #download-status { min-height: 1.5em; margin-bottom: 0; font-size: 0.92rem; }
+
+    @media (max-width: 480px) {
+      main { padding: 26px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand-mark" aria-hidden="true">R</div>
+    <h1>Download Red Robin's Access System</h1>
+    <p>Choose the operating system you want to install the app on.</p>
+
+    <form id="download-form">
+      <fieldset>
+        <legend>What operating system do you have?</legend>
+        <label class="system-option">
+          <input type="radio" name="operating-system" value="windows" checked>
+          <span>Windows</span>
+        </label>
+        <label class="system-option">
+          <input type="radio" name="operating-system" value="macos">
+          <span>macOS</span>
+        </label>
+        <label class="system-option">
+          <input type="radio" name="operating-system" value="linux">
+          <span>Linux</span>
+        </label>
+      </fieldset>
+      <button id="download-button" type="submit" disabled>Installer not available yet</button>
+      <p id="download-status" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <script>
+    const installerUrls = {
+      windows: "./installers/RedRobinAccessSystem-Windows-installer.zip",
+      macos: "./installers/RedRobinAccessSystem-macOS-installer.zip",
+      linux: "./installers/RedRobinAccessSystem-Linux-installer.zip"
+    };
+    const systemNames = {
+      windows: "Windows",
+      macos: "macOS",
+      linux: "Linux"
+    };
+
+    const form = document.getElementById("download-form");
+    const button = document.getElementById("download-button");
+    const status = document.getElementById("download-status");
+    const options = form.querySelectorAll('input[name="operating-system"]');
+
+    function updateDownloadButton() {
+      const selectedSystem = form.querySelector('input[name="operating-system"]:checked').value;
+      const available = Boolean(installerUrls[selectedSystem]);
+      button.disabled = !available;
+      button.textContent = available ? "Download for " + systemNames[selectedSystem] : "Installer not available yet";
+      status.textContent = available
+        ? selectedSystem === "windows"
+          ? "Extract the ZIP and double-click Install.bat. To open later from Command Prompt: start \"\" \"%LOCALAPPDATA%\\RedRobin\\AccessSystem\\index.html\""
+          : "The " + systemNames[selectedSystem] + " installer is ready to download."
+        : "The " + systemNames[selectedSystem] + " installer download has not been configured yet.";
+    }
+
+    options.forEach((option) => option.addEventListener("change", updateDownloadButton));
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const selectedSystem = form.querySelector('input[name="operating-system"]:checked').value;
+      const installerUrl = installerUrls[selectedSystem];
+      if (!installerUrl) {
+        updateDownloadButton();
+        return;
+      }
+
+      const link = document.createElement("a");
+      link.href = installerUrl;
+      link.download = "";
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    });
+
+    updateDownloadButton();
+  </script>
+</body>
+</html>
